@@ -107,5 +107,23 @@ def create_a_sale():
     sales.append(sale)
     return jsonify({"sales": sale})
 
+
+@app.route("/api/v1/products/<int:id>", methods = ['PUT'])
+def update_product(id):
+    my_product = [product for product in products if product['id'] == id]
+    
+    my_product[0]['product_name'] = request.json['product_name']
+    my_product[0]['manufacture_date'] = request.json['manufacture_date']
+    my_product[0]['expiry_date'] = request.json['expiry_date']
+
+    return jsonify({"product" : my_product[0]})
+
+
+@app.route("/api/v1/products/<int:id>", methods = ['DELETE'])
+def delete_product(id):
+    my_product = [product for product in products if product['id'] == id]
+    products.remove(my_product[0])
+    return jsonify({"product" : products})
+
 if __name__ == "__main__":
     app.run(debug=True)

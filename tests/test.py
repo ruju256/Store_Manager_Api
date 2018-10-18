@@ -1,10 +1,14 @@
 import unittest 
-from app import get_products
+from app.app import app
 
 
-class StoreManagerEndPoints(unittest.TestCase):
-    def test_index(self):
-        pass
+class StoreEndpoints(unittest.TestCase):
+
+    def test_if_products_endpoit_exists(self):
+        response = self.app.get('/api/v1/products', redirect_resource = True)
+        return (response.status, 200)
+
+    
 
 
 if "__name__" == "__main__":

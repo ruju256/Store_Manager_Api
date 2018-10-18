@@ -81,5 +81,31 @@ def get_single_sales_record(id):
     sale_record = [sale for sale in sales if sale['id'] == id]
     return jsonify({'sale':sale_record[0]})
 
+
+@app.route("/api/v1/products", methods=['POST'])
+def add_new_product():
+    product = {
+        "id" : 1,
+        "product_name" : request.json['product_name'],
+        "manufacture_date" : request.json['manufacture_date'],
+        "expiry_date" : request.json['expiry_date']
+        }
+    products.append(product)
+    return jsonify({"products": product})
+
+
+@app.route("/api/v1/sales", methods=['POST'])
+def create_a_sale():
+    sale = {
+        "id" : 5,
+        "product_sold" : request.json['product_sold'],
+        'quantity' : request.json['quantity'],
+        'unit_cost' : request.json['unit_cost'],
+        'total_cost' :request.json['total_cost'],
+        'attendant' :request.json['attendant']
+        }
+    sales.append(sale)
+    return jsonify({"sales": sale})
+
 if __name__ == "__main__":
     app.run(debug=True)

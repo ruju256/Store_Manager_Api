@@ -22,4 +22,5 @@ class TestStoreEndpoints(TestCase):
         response = self.client.get('/api/v1/products', redirect_resource = True)
         return (response.status, 200)
 
-    
+if __name__ == '__main__':
+    app.run()

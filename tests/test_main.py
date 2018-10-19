@@ -1,8 +1,8 @@
 from app import app
-import unittest 
+from unittest import TestCase 
 
 
-class TestStoreEndpoints(unittest.TestCase):
+class TestStoreEndpoints(TestCase):
 
     def setUp(self):
         self.client = app.test_client(self)
@@ -18,7 +18,4 @@ class TestStoreEndpoints(unittest.TestCase):
         response = self.client.get('/api/v1/products', redirect_resource = True)
         return (response.status, 200)
 
-
-if "__name__" == "__main__":
-    unittest.main()
     

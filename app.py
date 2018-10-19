@@ -3,6 +3,8 @@ from flask import Flask ,jsonify, request
 
 app = Flask(__name__)
 
+app.secret_key = "#StoreManagerAPIKey"
+
 #creating a list of dictionaries for all product details
 
 products = [

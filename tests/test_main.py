@@ -1,10 +1,8 @@
-import sys, os
-sys.path.append(os.path.abspath('../'))
-from app.app import app
+from app import app
 import unittest 
 
 
-class StoreEndpoints(unittest.TestCase):
+class TestStoreEndpoints(unittest.TestCase):
 
     def setUp(self):
         self.client = app.test_client(self)

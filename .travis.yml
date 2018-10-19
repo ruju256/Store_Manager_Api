@@ -12,5 +12,8 @@ script:
   - pytest tests/ --cov=modules --cov-report 
 term-missing
 
+before_install:
+  - pip install --user codecov
+
 after_success:
   - coveralls

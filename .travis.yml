@@ -10,7 +10,7 @@ install:
   
 
 script:
-  - pytest tests/ --cov=modules --cov-report term-missing
+  - pytest 
 
 after_success:
   - coveralls

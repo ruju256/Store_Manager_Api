@@ -1,6 +1,3 @@
-import os
-print(os.path.dirname(os.path.abspath(__file__)))
-
 from app.app import app
 import unittest 
 

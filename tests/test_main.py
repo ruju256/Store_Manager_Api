@@ -1,3 +1,6 @@
+import os
+print(os.path.dirname(os.path.abspath(__file__)))
+
 from app.app import app
 import unittest 
 
@@ -17,8 +20,6 @@ class StoreEndpoints(unittest.TestCase):
     def test_if_products_endpoint_exists(self):
         response = self.client.get('/api/v1/products', redirect_resource = True)
         return (response.status, 200)
-
-    
 
 
 if "__name__" == "__main__":

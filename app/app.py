@@ -1,5 +1,6 @@
 from flask import Flask ,jsonify, request
 
+
 app = Flask(__name__)
 
 #creating a list of dictionaries for all product details

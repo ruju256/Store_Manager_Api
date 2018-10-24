@@ -1,6 +1,6 @@
 import os
 import sys
-from flask import Flask ,jsonify, request
+from flask import Flask, jsonify, request
 
 
 app = Flask(__name__)
@@ -91,13 +91,13 @@ def get_single_sales_record(id):
 @app.route("/api/v1/products", methods=['POST'])
 def add_new_product():
     product = {
-        "id" : 1,
+        "id" : '1',
         "product_name" : request.json['product_name'],
         "manufacture_date" : request.json['manufacture_date'],
         "expiry_date" : request.json['expiry_date']
         }
     products.append(product)
-    return jsonify({"products": product})
+    return jsonify({"products": products})
 
 
 @app.route("/api/v1/sales", methods=['POST'])

@@ -1,6 +1,7 @@
 {
     "python.pythonPath": "store_manager\\Scripts\\python.exe",
     "python.linting.pylintPath": "store_manager\\Scripts\\pylint.exe",      
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true
+    "python.linting.pylintEnabled": false,
+    "python.linting.enabled": false,
+    "python.unitTest.pyTestEnabled": true,
 }

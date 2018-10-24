@@ -5,3 +5,5 @@ Challenge 2. Store Manager API  endpoints.
 [![Coverage Status](https://coveralls.io/repos/github/ruju256/Store_Manager_Api/badge.svg?branch=develop)](https://coveralls.io/github/ruju256/Store_Manager_Api?branch=develop)
 
 [![Build Status](https://travis-ci.com/ruju256/Store_Manager_Api.svg?branch=develop)](https://travis-ci.com/ruju256/Store_Manager_Api)
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/8a6ee1781840bded0ec9/maintainability)](https://codeclimate.com/github/ruju256/Store_Manager_Api/maintainability)

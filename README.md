@@ -9,3 +9,7 @@ Challenge 2. Store Manager API  endpoints.
 [![Maintainability](https://api.codeclimate.com/v1/badges/8a6ee1781840bded0ec9/maintainability)](https://codeclimate.com/github/ruju256/Store_Manager_Api/maintainability)
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8a6ee1781840bded0ec9/test_coverage)](https://codeclimate.com/github/ruju256/Store_Manager_Api/test_coverage)
+
+
+[![codecov](https://codecov.io/gh/ruju256/Store_Manager_Api/branch/develop/graph/badge.svg)](https://codecov.io/gh/ruju256/Store_Manager_Api)
+

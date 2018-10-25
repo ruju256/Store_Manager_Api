@@ -92,9 +92,9 @@ def get_single_sales_record(id):
 def add_new_product():
     product = {
         "id" : '1',
-        "product_name" : request.json['product_name'],
-        "manufacture_date" : request.json['manufacture_date'],
-        "expiry_date" : request.json['expiry_date']
+        "product_name" : request.json[0]['product_name'],
+        "manufacture_date" : request.json[0]['manufacture_date'],
+        "expiry_date" : request.json[0]['expiry_date']
         }
     products.append(product)
     return jsonify({"products": products})
@@ -104,11 +104,11 @@ def add_new_product():
 def create_a_sale():
     sale = {
         "id" : 5,
-        "product_sold" : request.json['product_sold'],
-        'quantity' : request.json['quantity'],
-        'unit_cost' : request.json['unit_cost'],
-        'total_cost' :request.json['total_cost'],
-        'attendant' :request.json['attendant']
+        "product_sold" : request.json[0]['product_sold'],
+        'quantity' : request.json[0]['quantity'],
+        'unit_cost' : request.json[0]['unit_cost'],
+        'total_cost' :request.json[0]['total_cost'],
+        'attendant' :request.json[0]['attendant']
         }
     sales.append(sale)
     return jsonify({"sales": sale})
@@ -118,9 +118,9 @@ def create_a_sale():
 def update_product(id):
     my_product = [product for product in products if product['id'] == id]
     
-    my_product[0]['product_name'] = request.json['product_name']
-    my_product[0]['manufacture_date'] = request.json['manufacture_date']
-    my_product[0]['expiry_date'] = request.json['expiry_date']
+    my_product[0]['product_name'] = request.json[0]['product_name']
+    my_product[0]['manufacture_date'] = request.json[0]['manufacture_date']
+    my_product[0]['expiry_date'] = request.json[0]['expiry_date']
 
     return jsonify({"product" : my_product[0]})
 

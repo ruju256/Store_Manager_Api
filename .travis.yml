@@ -12,6 +12,7 @@ install:
 script: 
   - python -m unittest tests/test_main.py
   - py.test --cov=main tests/test_main.py
+  - codeclimate-test-reporter --file .coverage
 
 after_success:
   - coveralls

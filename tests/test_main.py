@@ -1,6 +1,6 @@
 import os
 import sys
-from api.app import app
+from app import app
 from unittest import TestCase 
 import coverage
 import json
@@ -72,5 +72,3 @@ class TestStoreEndpoints(TestCase):
     
 
 
-if __name__ == '__main__':
-    unittest.main()

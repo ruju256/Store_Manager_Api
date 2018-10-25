@@ -3,11 +3,9 @@ import sys
 from flask import Flask, jsonify, request
 
 
+#creating a list of dictionaries for all product details
 app = Flask(__name__)
 app.secret_key = "#StoreManagerAPIKey"
-
-
-#creating a list of dictionaries for all product details
 
 products = [
     {
@@ -129,6 +127,7 @@ def delete_product(id):
     my_product = [product for product in products if product['id'] == id]
     products.remove(my_product[0])
     return jsonify({"product" : products})
+
 
 if __name__ == "__main__":
     app.run(debug=True)

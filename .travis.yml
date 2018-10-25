@@ -11,7 +11,7 @@ install:
   - pip install -r requirements.txt
 
 
-script: pytest tests/test_main.py
+script: python -m unittest tests/test_main.py
 
 after_success:
   - coveralls

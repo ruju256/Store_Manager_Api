@@ -65,7 +65,6 @@ sales = [
     },
 ]
 
-
 @app.route("/api/v1/products", methods = ['GET'])
 def get_products():
     return jsonify({'products' : products})

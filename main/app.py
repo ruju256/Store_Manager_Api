@@ -4,7 +4,6 @@ from flask import Flask, jsonify, request
 
 
 app = Flask(__name__)
-
 app.secret_key = "#StoreManagerAPIKey"
 
 
@@ -65,6 +64,7 @@ sales = [
         'attendant' : 'mary'
     },
 ]
+
 
 @app.route("/api/v1/products", methods = ['GET'])
 def get_products():

@@ -9,13 +9,13 @@ cache: pip
 
 install:
   - pip install -r requirements.txt
+  - pip install pytest
   - pip install coverage
   - pip install codecov
 
 
 script:
-  - python -m unittest tests/test_main.py
-  - coverage run tests/test_main.py
+  - pytest tests/test_main.py
 
 after_success:
   - coveralls

@@ -9,15 +9,15 @@ A Store Manager REST API using data structures specifically Lists and Dictionari
 
 ## Prerequisites
 In order to set up and test/use the API, this is what you will need:
-*Python Envirronment : This project was built using python
-*Flask Microframework: Flask is a flexible python     micro-framework that helps you build web applications.
-*Pytest : Pytest is a testing framework. It helps you test all your code before you deploy it.
+* Python Envirronment : This project was built using python
+* Flask Microframework: Flask is a flexible python     micro-framework that helps you build web applications.
+* Pytest : Pytest is a testing framework. It helps you test all your code before you deploy it.
 *Postman : A powerful HTTP client for testing web services. Basically testing the endpoints.
 
 ## Continuous Integration:
 Ensuring that your code base is tested for every build. You have to have accounts for Travis CI, Codecov, Coveralls and Code climate
-*A Travis CI account: Travis CI is a hosted, distributed continuous integration service used to build and test software projects hosted at GitHub.[wikipedia](https://en.wikipedia.org/wiki/Travis_CI)
-*Coveralls account: Helps ypu know how much of your code or lines of code have been tested.
+* A Travis CI account: Travis CI is a hosted, distributed continuous integration service used to build and test software projects hosted at GitHub.[wikipedia](https://en.wikipedia.org/wiki/Travis_CI)
+* Coveralls account: Helps ypu know how much of your code or lines of code have been tested.
 
 ## Deployment
 This application was deployed on [Heroku](https://www.heroku.com/). A cloud platform that can help you beta test you web apps and API endpoints.

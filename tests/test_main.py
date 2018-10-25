@@ -1,6 +1,6 @@
 import os
 import sys
-from main.app import app
+from api.app import app
 from unittest import TestCase 
 import coverage
 import json

@@ -68,12 +68,21 @@ def get_single_sales_record(id):
 @app.route("/api/v1/products", methods=['POST'])
 @jwt_required
 def add_new_product():
-    product = {
-        "id" : '1',
+    if len(products)==0:
+       product = {
+        "id" : 1,
         "product_name" : request.json[0]['product_name'],
         "manufacture_date" : request.json[0]['manufacture_date'],
         "expiry_date" : request.json[0]['expiry_date']
         }
+    elif len(products)!=0:
+        product = {
+        "id" : len(products) +1,
+        "product_name" : request.json[0]['product_name'],
+        "manufacture_date" : request.json[0]['manufacture_date'],
+        "expiry_date" : request.json[0]['expiry_date']
+        }
+    
     products.append(product)
     return jsonify({"products": products})
 
@@ -82,7 +91,7 @@ def add_new_product():
 @jwt_required
 def create_a_sale():
     sale = {
-        "id" : 5,
+        "id" : len(sales)+1,
         "product_sold" : request.json[0]['product_sold'],
         'quantity' : request.json[0]['quantity'],
         'unit_cost' : request.json[0]['unit_cost'],

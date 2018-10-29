@@ -2,7 +2,6 @@ import os
 import sys
 from app import app
 from unittest import TestCase 
-import coverage
 import json
 
 

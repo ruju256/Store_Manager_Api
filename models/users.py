@@ -1,4 +1,6 @@
 from database.dbsetup import Database
+import datetime
+import time
 
 databaseObject = Database()
 class Users(object):
@@ -8,9 +10,10 @@ class Users(object):
         self.email = email
         self.password = password
         self.role = role
-    
-    def signup(self):
+        
+    def save_user(self):
         '''creating database connection'''
+        
         databaseObject.create_a_user(self.name, self.email, self.password, self.role)
-        return print("User {} has been successfully added".format(self.name))
+        return "{}".format(self.name)
 

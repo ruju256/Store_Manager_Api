@@ -10,28 +10,28 @@ app.secret_key = "#StoreManagerAPIKey"
 app.config['JWT_SECRET_KEY'] = '@andela256'
 jwt = JWTManager(app)
 
-#creating a list of dictionaries for all product details
-products = [
-{}
-]
+products=[]
+sales=[]
 
-#creating a list of dictionaries for all sales records
-
-sales = [
-    {}
-]
 @app.route("/auth/signup", methods=['POST'])
-def signup():
-    post_data = request.get_json
-    email = post_data.get('email')
+def save_user():
+    post_data = request.get_json()    
     name = post_data.get('name')
+    email = post_data.get('email')
     password = post_data.get('password')
     role = post_data.get('role')
     new_user = Users(name, email, password, role)
-    name =new_user.signup()
+    name =new_user.save_user()
 
     return jsonify({
-        'msg':'You have successfully added {}'.format(name)
+        'msg':'You have successfully added {}'.format(name),
+        'user': {
+                "id": 1,
+                "name": "name",
+                "email":"email",
+                "password":"password",
+                "role":"role"
+             },
     }), 201
 
 @app.route("/auth/login", methods = ['POST'])

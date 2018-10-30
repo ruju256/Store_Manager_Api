@@ -70,4 +70,3 @@ class TestStoreEndpoints(TestCase):
         self.assertEqual(response.status_code, 404)
     
 
-

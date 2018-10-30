@@ -20,8 +20,11 @@ products = [
 sales = [
     {}
 ]
+@app.route("/auth/signup", methods=['POST'])
+def signup():
+    pass
 
-@app.route("/api/v1/login", methods = ['POST'])
+@app.route("/auth/login", methods = ['POST'])
 def login():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
@@ -38,6 +41,11 @@ def login():
 
     access_token = create_access_token(identity = email)
     return jsonify(access_token=access_token),200
+
+@app.route("/api/v1/logout")
+@jwt_required
+def logout():
+    pass
 
 @app.route("/api/v1/products", methods = ['GET'])
 @jwt_required

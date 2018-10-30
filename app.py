@@ -2,7 +2,7 @@ import os
 import sys
 from flask import Flask, jsonify, request
 from flask_jwt_extended import (JWTManager, jwt_required, create_access_token, get_jwt_identity)
-
+from models.users import Users
 
 app = Flask(__name__)
 app.secret_key = "#StoreManagerAPIKey"
@@ -22,7 +22,17 @@ sales = [
 ]
 @app.route("/auth/signup", methods=['POST'])
 def signup():
-    pass
+    post_data = request.get_json
+    email = post_data.get('email')
+    name = post_data.get('name')
+    password = post_data.get('password')
+    role = post_data.get('role')
+    new_user = Users(name, email, password, role)
+    name =new_user.signup()
+
+    return jsonify({
+        'msg':'You have successfully added {}'.format(name)
+    }), 201
 
 @app.route("/auth/login", methods = ['POST'])
 def login():

@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, make_response
 from models.users import Users
+from models.products import Products
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 import jwt
@@ -9,8 +10,6 @@ from functools import wraps
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "#StoreManagerAPIKey"
-products=[]
-sales=[]
 
 def token_required(f):
     @wraps(f)
@@ -89,84 +88,92 @@ def logout(current_user):
 @app.route("/api/v1/products", methods = ['GET'])
 @token_required
 def get_products(current_user):
-    return jsonify({'products' : products})
+    pass
 
 
 @app.route("/api/v1/products/<int:id>", methods = ['GET'])
 @token_required
 def get_single_product_details(current_user, id):
-    product_details = [product for product in products if product['id'] == id]
-    return jsonify({'product':product_details[0]})
+    # product_details = [product for product in products if product['id'] == id]
+    # return jsonify({'product':product_details[0]})
+    pass
     
 
 @app.route("/api/v1/sales", methods = ['GET'])
 @token_required
 def get_sales_records(current_user):
-    return jsonify({'sales' : sales})
+    # return jsonify({'sales' : sales})
+    pass
 
 
 @app.route("/api/v1/sales/<int:id>", methods = ['GET'])
 @token_required
 def get_single_sales_record(id):
-    sale_record = [sale for sale in sales if sale['id'] == id]
-    return jsonify({'sale':sale_record[0]})
+    # sale_record = [sale for sale in sales if sale['id'] == id]
+    # return jsonify({'sale':sale_record[0]})
+    pass
 
 
 @app.route("/api/v1/products", methods=['POST'])
-@token_required
-def add_new_product(current_user):
-    if len(products)==0:
-       product = {
-        "id" : 1,
-        "product_name" : request.json[0]['product_name'],
-        "manufacture_date" : request.json[0]['manufacture_date'],
-        "expiry_date" : request.json[0]['expiry_date']
-        }
-    elif len(products)!=0:
-        product = {
-        "id" : len(products) +1,
-        "product_name" : request.json[0]['product_name'],
-        "manufacture_date" : request.json[0]['manufacture_date'],
-        "expiry_date" : request.json[0]['expiry_date']
-        }
+def add_new_product():
+    post_data = request.get_json()
     
-    products.append(product)
-    return jsonify({"products": products})
+    product_name = post_data['product_name']
+    manufacture_date = post_data['manufacture_date']
+    expiry_date = post_data['expiry_date']
+    quantity = post_data['quantity']
+    description = post_data['description']
+
+    new_product = Products(product_name, manufacture_date, expiry_date, quantity, description)
+    prod_name =new_product.save_product()
+    return jsonify({
+        'msg':'{} successfully added'.format(prod_name),
+        'product': {
+                "product_name": product_name,
+                "manufacture_date":manufacture_date,
+                "expiry_date":expiry_date,
+                "quantity":quantity,
+                "description":description
+             },
+    }), 201 
 
 
 @app.route("/api/v1/sales", methods=['POST'])
 @token_required
 def create_a_sale(current_user):
-    sale = {
-        "id" : len(sales)+1,
-        "product_sold" : request.json[0]['product_sold'],
-        'quantity' : request.json[0]['quantity'],
-        'unit_cost' : request.json[0]['unit_cost'],
-        'total_cost' :request.json[0]['total_cost'],
-        'attendant' :request.json[0]['attendant']
-        }
-    sales.append(sale)
-    return jsonify({"sales": sale})
+    # sale = {
+    #     "id" : len(sales)+1,
+    #     "product_sold" : request.json[0]['product_sold'],
+    #     'quantity' : request.json[0]['quantity'],
+    #     'unit_cost' : request.json[0]['unit_cost'],
+    #     'total_cost' :request.json[0]['total_cost'],
+    #     'attendant' :request.json[0]['attendant']
+    #     }
+    # sales.append(sale)
+    # return jsonify({"sales": sale})
+    pass
 
 
 @app.route("/api/v1/products/<int:id>", methods = ['PUT'])
 @token_required
 def update_product(current_user, id):
-    my_product = [product for product in products if product['id'] == id]
+    # my_product = [product for product in products if product['id'] == id]
     
-    my_product[0]['product_name'] = request.json[0]['product_name']
-    my_product[0]['manufacture_date'] = request.json[0]['manufacture_date']
-    my_product[0]['expiry_date'] = request.json[0]['expiry_date']
+    # my_product[0]['product_name'] = request.json[0]['product_name']
+    # my_product[0]['manufacture_date'] = request.json[0]['manufacture_date']
+    # my_product[0]['expiry_date'] = request.json[0]['expiry_date']
 
-    return jsonify({"product" : my_product[0]})
+    # return jsonify({"product" : my_product[0]})
+    pass
 
 
 @app.route("/api/v1/products/<int:id>", methods = ['DELETE'])
 @token_required
 def delete_product(current_user,id):
-    my_product = [product for product in products if product['id'] == id]
-    products.remove(my_product[0])
-    return jsonify({"product" : products})
+    # my_product = [product for product in products if product['id'] == id]
+    # products.remove(my_product[0])
+    # return jsonify({"product" : products})
+    pass
 
 
 if __name__ == "__main__":

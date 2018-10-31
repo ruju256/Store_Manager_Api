@@ -3,28 +3,10 @@ from unittest import TestCase
 import json
 
 
-class TestStoreEndpoints(TestCase):
+class TestUserEndpoints(TestCase):
 
 
     def setUp(self):
-        self.products = [
-            {
-                'id' : 1,
-                "product_name" : "Bread",
-                "manufacture_date" : "2018-11-02",
-                "expiry_date" : "2019-01-10"
-            }        
-        ]
-        self.sales = [
-            {
-                'id' : '1',
-                'product_sold' : 'Rice',
-                'quantity' : '3 kgs',
-                'unit_cost' : '3500',
-                'total_cost' : '10500',
-                'attendant' : 'john'
-            }
-        ]
         self.client = app.test_client()
     
     def tearDown(self):

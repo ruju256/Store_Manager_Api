@@ -1,6 +1,7 @@
 import os
 import sys
 from app import app
+from models import routes
 from unittest import TestCase 
 import json
 

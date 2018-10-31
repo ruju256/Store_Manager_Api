@@ -1,9 +1,9 @@
-
 from flask import Flask, jsonify, request, make_response
 from models.users import Users
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 import jwt
+from functools import wraps
 
 
 
@@ -12,28 +12,28 @@ app.config['SECRET_KEY'] = "#StoreManagerAPIKey"
 products=[]
 sales=[]
 
-# def token_required(f):
-#     @wraps(f)
-#     def decorated(*args, **kwargs):
-#         token = None
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
 
-#         if 'x-access-token' in request.headers:
-#             token = request.headers['x-access-token']
+        if 'x-access-token' in request.headers:
+            token = request.headers['x-access-token']
         
-#         if not token:
-#             return jsonify({"msg":"Token is missing"}), 401
-#         try:
-#             data = jwt.decode(token, app.config['SECRET_KEY'])
-#             current_user = Users.find_specific_item('users', 'email', data['email'])
-#         except:
-#             return jsonify({'message':'Token is invalid'}), 401
-#         return f(current_user, *args, **kwargs)
+        if not token:
+            return jsonify({"msg":"Token is missing"}), 401
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'])
+            current_user = Users.find_specific_item('users', 'email', data['email'])
+        except:
+            return jsonify({'message':'Token is invalid'}), 401
+        return f(current_user, *args, **kwargs)
 
-#     return decorated
+    return decorated
 
-@app.route("/home", methods=['GET'])
+@app.route("/home", methods=['POST'])
 def home():
-    return jsonify({"msg": "Welcome to home page"})
+    return jsonify({"msg": "Welcome to home pa"})
 
 @app.route("/auth/signup", methods=['POST'])
 def save_user():
@@ -71,48 +71,50 @@ def login():
     
     user = Users.find_specific_item('users', 'email', email)
 
+
     if not user:
         return make_response('could not verify. User is not in the database', 401, {'WWW-Authenticate': 'Basic realm=Login required'})
 
-    if check_password_hash(user.password, password):
-        access_token = jwt.encode({'email':user.email, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
+    if check_password_hash(user[3], password):
+        access_token = jwt.encode({'email':user[2], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
         return jsonify({"access_token":access_token.decode('UTF-8')})
 
     return make_response('could not verify. Invalid Password', 401, {'WWW-Authenticate': 'Basic realm=Login required'})
 
 @app.route("/api/v1/logout")
-# @token_required
+@token_required
 def logout(current_user):
     pass
 
 @app.route("/api/v1/products", methods = ['GET'])
-def get_products():
+@token_required
+def get_products(current_user):
     return jsonify({'products' : products})
 
 
 @app.route("/api/v1/products/<int:id>", methods = ['GET'])
-# @token_required
-def get_single_product_details(id):
+@token_required
+def get_single_product_details(current_user, id):
     product_details = [product for product in products if product['id'] == id]
     return jsonify({'product':product_details[0]})
     
 
 @app.route("/api/v1/sales", methods = ['GET'])
-# @token_required
-def get_sales_records():
+@token_required
+def get_sales_records(current_user):
     return jsonify({'sales' : sales})
 
 
 @app.route("/api/v1/sales/<int:id>", methods = ['GET'])
-# @token_required
+@token_required
 def get_single_sales_record(id):
     sale_record = [sale for sale in sales if sale['id'] == id]
     return jsonify({'sale':sale_record[0]})
 
 
 @app.route("/api/v1/products", methods=['POST'])
-# @token_required
-def add_new_product():
+@token_required
+def add_new_product(current_user):
     if len(products)==0:
        product = {
         "id" : 1,
@@ -133,8 +135,8 @@ def add_new_product():
 
 
 @app.route("/api/v1/sales", methods=['POST'])
-# @token_required
-def create_a_sale():
+@token_required
+def create_a_sale(current_user):
     sale = {
         "id" : len(sales)+1,
         "product_sold" : request.json[0]['product_sold'],
@@ -148,8 +150,8 @@ def create_a_sale():
 
 
 @app.route("/api/v1/products/<int:id>", methods = ['PUT'])
-# @token_required
-def update_product(id):
+@token_required
+def update_product(current_user, id):
     my_product = [product for product in products if product['id'] == id]
     
     my_product[0]['product_name'] = request.json[0]['product_name']
@@ -160,8 +162,8 @@ def update_product(id):
 
 
 @app.route("/api/v1/products/<int:id>", methods = ['DELETE'])
-# @token_required
-def delete_product(id):
+@token_required
+def delete_product(current_user,id):
     my_product = [product for product in products if product['id'] == id]
     products.remove(my_product[0])
     return jsonify({"product" : products})

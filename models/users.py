@@ -20,6 +20,6 @@ class Users(object):
     @staticmethod
     def find_specific_item(table_name, column_name, value):
         item = databaseObject.query(table_name, column_name, value)
-        if item == [] or item is None:
-            return False
+        # if item == [] or item is None:
+        #     return False
         return item

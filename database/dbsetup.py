@@ -9,12 +9,12 @@ class Database():
                                         database = "andela_test_db",
                                         user = "postgres",
                                         password = "Tahiti92",
-                                        host = "127.0.0.1",
+                                        host = "localhost",
                                         port = "5432"                                
                                     )
 
             self.cursor = self.connection.cursor()
-            self.connection.autocommit = True
+           
 
             creating_table_users = '''CREATE TABLE IF NOT EXISTS users
                 (
@@ -25,7 +25,8 @@ class Database():
                     role    TEXT NOT NULL
                 ); '''    
 
-            self.cursor.execute(creating_table_users)            
+            self.cursor.execute(creating_table_users) 
+            self.connection.commit()          
             print("Tables successfully Created")
 
         except Exception as error :
@@ -44,5 +45,5 @@ class Database():
         self.cursor.execute(get_an_item)
         row = self.cursor.fetchone()
         self.connection.commit()
-        return row[0]
+        return row
     

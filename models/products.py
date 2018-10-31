@@ -12,5 +12,6 @@ class Products():
         self.expiry_date = expiry_date
         self.quantity = quantity
 
-    def fetch_all_products():
-        product_list =  database.q
+    # def fetch_all_products():
+    #     product_list =  database.q
+

@@ -81,18 +81,15 @@ def login():
     return make_response('could not verify. Invalid Password', 401, {'WWW-Authenticate': 'Basic realm=Login required'})
 
 @app.route("/api/v1/logout")
-@token_required
 def logout(current_user):
     pass
 
 @app.route("/api/v1/products", methods = ['GET'])
-@token_required
 def get_products(current_user):
     pass
 
 
 @app.route("/api/v1/products/<int:id>", methods = ['GET'])
-@token_required
 def get_single_product_details(current_user, id):
     # product_details = [product for product in products if product['id'] == id]
     # return jsonify({'product':product_details[0]})
@@ -100,14 +97,12 @@ def get_single_product_details(current_user, id):
     
 
 @app.route("/api/v1/sales", methods = ['GET'])
-@token_required
 def get_sales_records(current_user):
     # return jsonify({'sales' : sales})
     pass
 
 
 @app.route("/api/v1/sales/<int:id>", methods = ['GET'])
-@token_required
 def get_single_sales_record(id):
     # sale_record = [sale for sale in sales if sale['id'] == id]
     # return jsonify({'sale':sale_record[0]})
@@ -137,10 +132,32 @@ def add_new_product():
              },
     }), 201 
 
+@app.route("/api/v1/products/<int:id>", methods = ['PUT'])
+def update_product(id):
+    post_data = request.get_json()
+
+    product_name = post_data['product_name']
+    manufacture_date = post_data['manufacture_date']
+    expiry_date = post_data['expiry_date']
+    quantity = post_data['quantity']
+    description = post_data['description']
+
+    new_product_details = Products(product_name, manufacture_date, expiry_date, quantity, description)
+    updated_product = new_product_details.update_a_product(id)
+
+    if not updated_product:
+        return jsonify({"msg":"Product can not be found in the database"}), 400
+
+    return jsonify({
+            'msg':'{} Details successfully Updated'.format(product_name),
+            'product id': id
+        })
+    
+    
+
 
 @app.route("/api/v1/sales", methods=['POST'])
-@token_required
-def create_a_sale(current_user):
+def save_a_sale(current_user):
     # sale = {
     #     "id" : len(sales)+1,
     #     "product_sold" : request.json[0]['product_sold'],
@@ -154,22 +171,8 @@ def create_a_sale(current_user):
     pass
 
 
-@app.route("/api/v1/products/<int:id>", methods = ['PUT'])
-@token_required
-def update_product(current_user, id):
-    # my_product = [product for product in products if product['id'] == id]
-    
-    # my_product[0]['product_name'] = request.json[0]['product_name']
-    # my_product[0]['manufacture_date'] = request.json[0]['manufacture_date']
-    # my_product[0]['expiry_date'] = request.json[0]['expiry_date']
-
-    # return jsonify({"product" : my_product[0]})
-    pass
-
-
 @app.route("/api/v1/products/<int:id>", methods = ['DELETE'])
-@token_required
-def delete_product(current_user,id):
+def delete_product(id):
     # my_product = [product for product in products if product['id'] == id]
     # products.remove(my_product[0])
     # return jsonify({"product" : products})

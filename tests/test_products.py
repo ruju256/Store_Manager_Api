@@ -30,3 +30,5 @@ class TestProductEndpoints(TestCase):
 
         self.assertEqual(response_data['msg'], 'Bread successfully added')
         self.assertEqual(response.status_code, 201)
+
+  

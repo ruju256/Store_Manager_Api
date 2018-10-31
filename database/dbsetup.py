@@ -65,3 +65,10 @@ class Database():
         """.format(product_name,manufacture_date,expiry_date,quantity, description)
         self.cursor.execute(adding_a_product)
         self.connection.commit()
+
+    def update_a_product(self, product_name, manufacture_date, expiry_date, quantity, description, id):
+        updating_a_product = """
+        UPDATE products SET product_name='{}', manufacture_date='{}', expiry_date='{}', quantity='{}', description='{}'\
+        WHERE id='{}';""".format(product_name,manufacture_date,expiry_date,quantity, description, id)
+        self.cursor.execute(updating_a_product)
+        self.connection.commit()

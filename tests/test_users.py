@@ -1,5 +1,3 @@
-import os
-import sys
 from app import app
 from unittest import TestCase 
 import json
@@ -45,7 +43,7 @@ class TestStoreEndpoints(TestCase):
         response =  self.client.post('/auth/signup',content_type='application/json',data=json.dumps(new_user)
         )
 
-        response = json.loads(response.data.decode())
+        response_data = json.loads(response.data.decode())
 
-        self.assertEqual(response['msg'], 'You have successfully added')
+        self.assertEqual(response_data['msg'], 'You have successfully added ezra')
         self.assertEqual(response.status_code, 201)

@@ -14,18 +14,18 @@ class Database():
                                     )
 
             self.cursor = self.connection.cursor()
-            
-            creating_table_users = '''CREATE TABLE users
+            self.connection.autocommit = True
+
+            creating_table_users = '''CREATE TABLE IF NOT EXISTS users
                 (
                     id SERIAL   PRIMARY KEY ,                                        
-                    name    VARCHAR (50)    NOT NULL,
-                    email   VARCHAR (50)    NOT NULL,
-                    password    VARCHAR (50)    NOT NULL,
-                    role    VARCHAR (50) NOT NULL
+                    name    TEXT    NOT NULL,
+                    email   TEXT    NOT NULL,
+                    password    TEXT    NOT NULL,
+                    role    TEXT NOT NULL
                 ); '''    
 
-            self.cursor.execute(creating_table_users)
-            self.connection.commit()
+            self.cursor.execute(creating_table_users)            
             print("Tables successfully Created")
 
         except Exception as error :
@@ -33,6 +33,16 @@ class Database():
         
 
     def create_a_user(self, name, email, password, role):        
-        creating_a_user = '''INSERT INTO users(name,email,password,role) VALUES('{}','{}','{}','{}');'''.format(name,email,password,role)
+        creating_a_user = """
+        INSERT INTO users (name,email,password,role) VALUES('{}','{}','{}','{}');
+        """.format(name,email,password,role)
         self.cursor.execute(creating_a_user)
+        self.connection.commit()
+
+    def query(self,table_name, column_name, value):
+        get_an_item = """ SELECT * FROM {} WHERE {}='{}';""".format(table_name, column_name, value)
+        self.cursor.execute(get_an_item)
+        row = self.cursor.fetchone()
+        self.connection.commit()
+        return row
     

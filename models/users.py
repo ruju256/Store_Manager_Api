@@ -17,3 +17,9 @@ class Users(object):
         databaseObject.create_a_user(self.name, self.email, self.password, self.role)
         return "{}".format(self.name)
 
+    @staticmethod
+    def find_specific_item(table_name, column_name, value):
+        item = databaseObject.query(table_name, column_name, value)
+        if item == [] or item is None:
+            return False
+        return item

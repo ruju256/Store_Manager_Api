@@ -1,26 +1,30 @@
-import os
-import sys
-from flask import Flask, jsonify, request
+
+from flask import Flask, jsonify, request, make_response
 from flask_jwt_extended import (JWTManager, jwt_required, create_access_token, get_jwt_identity)
 from models.users import Users
+from werkzeug.security import generate_password_hash, check_password_hash
+import datetime
+import jwt
+
+
 
 app = Flask(__name__)
 app.secret_key = "#StoreManagerAPIKey"
 
 app.config['JWT_SECRET_KEY'] = '@andela256'
-jwt = JWTManager(app)
-
 products=[]
 sales=[]
 
 @app.route("/auth/signup", methods=['POST'])
 def save_user():
-    post_data = request.get_json()    
-    name = post_data.get('name')
-    email = post_data.get('email')
-    password = post_data.get('password')
-    role = post_data.get('role')
-    new_user = Users(name, email, password, role)
+    post_data = request.get_json()
+    
+    name = post_data['name']
+    email = post_data['email']
+    password = post_data['password']
+    hashed_password = generate_password_hash(password, method='sha256')
+    role = post_data['role']
+    new_user = Users(name, email, hashed_password, role)
     name =new_user.save_user()
 
     return jsonify({
@@ -36,21 +40,24 @@ def save_user():
 
 @app.route("/auth/login", methods = ['POST'])
 def login():
-    if not request.is_json:
-        return jsonify({"msg": "Missing JSON in request"}), 400
-    email = request.json.get('email', None)
-    password = request.json.get('password', None)
 
-    if not email:
-        return jsonify({"msg":"Email can not be empty"}), 400
-    if not password:
-        return jsonify({"msg":"Password can not be empty"}), 400
+    post_data = request.get_json()
+    email = post_data['email']
+    password = post_data['password']
+    auth = request.authorization
 
-    if email != 'ezramahlon@gmail.com' or password !='admin123':
-        return jsonify({"msg":"Invalid Email or Password"}), 400
+    if not auth or not email or not password:
+        return make_response('could not verify either authentication or email password or fields are empty', 401, {'WWW-Authenticate': 'Basic realm=Login required'})
+    user = Users.find_specific_item('users', 'email', email)
 
-    access_token = create_access_token(identity = email)
-    return jsonify(access_token=access_token),200
+    if not user:
+        return make_response('could not verify. User is not in the database', 401, {'WWW-Authenticate': 'Basic realm=Login required'})
+
+    if check_password_hash(user.password, password):
+        access_token = jwt.encode({'email':user.email, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['JWT_SECRET_KEY'])
+        return jsonify({"access_token":access_token.decode('UTF-8')})
+
+    return make_response('could not verify. Invalid Password', 401, {'WWW-Authenticate': 'Basic realm=Login required'})
 
 @app.route("/api/v1/logout")
 @jwt_required

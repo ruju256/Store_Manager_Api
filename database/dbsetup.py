@@ -44,5 +44,5 @@ class Database():
         self.cursor.execute(get_an_item)
         row = self.cursor.fetchone()
         self.connection.commit()
-        return row
+        return row[0]
     

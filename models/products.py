@@ -21,8 +21,7 @@ class Products():
         return "{}".format(self.product_name)
 
     def update_a_product(self, id):
-        product = Users.find_specific_item('products','id', id)
-        
+        product = Users.find_specific_item('products','id', id)        
         if product is None:
             return False       
         databaseObject.update_a_product(self.product_name, self.manufacture_date, self.expiry_date, self.quantity, self.description, id)
@@ -36,3 +35,26 @@ class Products():
             "quantity":product[4],
             "description":product[5]
         }
+
+    def get_details_for_single_product(self, id):
+        product = Users.find_specific_item('products', 'id', id)
+        if product is None:
+            return False
+        return{
+            "product_name":product[1],
+            "manufacture_date":product[2],
+            "expiry_date":product[3],
+            "quantity":product[4],
+            "description":product[5]
+        }
+
+    @staticmethod
+    def delete_product(id):
+        product = Users.find_specific_item('products', 'id', id)
+        if product is None:
+            return False
+        databaseObject.delete_product(id)
+        return{
+            "msg":"Product has been deleted"
+        }
+

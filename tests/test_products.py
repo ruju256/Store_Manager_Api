@@ -12,8 +12,6 @@ class TestProductEndpoints(TestCase):
     def tearDown(self):
         pass
     
-
-    
     def test_if_product_is_saved(self):
         new_product = {
             "description": "TipTop bread",

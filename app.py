@@ -22,17 +22,13 @@ def token_required(f):
         if not token:
             return jsonify({"msg":"Token is missing"}), 401
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'])
-            current_user = Users.find_specific_item('users', 'email', data['email'])
+            token_data = jwt.decode(token, app.config['SECRET_KEY'])
+            current_user = Users.find_specific_item('users', 'email', token_data['email'])
         except:
             return jsonify({'message':'Token is invalid'}), 401
         return f(current_user, *args, **kwargs)
 
     return decorated
-
-@app.route("/home", methods=['POST'])
-def home():
-    return jsonify({"msg": "Welcome to home pa"})
 
 @app.route("/auth/signup", methods=['POST'])
 def save_user():
@@ -80,37 +76,28 @@ def login():
 
     return make_response('could not verify. Invalid Password', 401, {'WWW-Authenticate': 'Basic realm=Login required'})
 
-@app.route("/api/v1/logout")
-def logout(current_user):
-    pass
 
 @app.route("/api/v1/products", methods = ['GET'])
+@token_required
 def get_products(current_user):
-    pass
-
-
-@app.route("/api/v1/products/<int:id>", methods = ['GET'])
-def get_single_product_details(current_user, id):
-    # product_details = [product for product in products if product['id'] == id]
-    # return jsonify({'product':product_details[0]})
     pass
     
 
 @app.route("/api/v1/sales", methods = ['GET'])
 def get_sales_records(current_user):
-    # return jsonify({'sales' : sales})
+    
     pass
 
 
 @app.route("/api/v1/sales/<int:id>", methods = ['GET'])
 def get_single_sales_record(id):
-    # sale_record = [sale for sale in sales if sale['id'] == id]
-    # return jsonify({'sale':sale_record[0]})
+   
     pass
 
 
 @app.route("/api/v1/products", methods=['POST'])
-def add_new_product():
+@token_required
+def add_new_product(current_user):
     post_data = request.get_json()
     
     product_name = post_data['product_name']
@@ -133,7 +120,8 @@ def add_new_product():
     }), 201 
 
 @app.route("/api/v1/products/<int:id>", methods = ['PUT'])
-def update_product(id):
+@token_required
+def update_product(current_user, id):
     post_data = request.get_json()
 
     product_name = post_data['product_name']
@@ -152,32 +140,44 @@ def update_product(id):
             'msg':'{} Details successfully Updated'.format(product_name),
             'product id': id
         })
-    
-    
 
+@app.route("/api/v1/products/<int:id>", methods = ['GET'])
+@token_required
+def get_single_product_details(current_user, id):
+    single_product = Users.find_specific_item('products','id', id)
+    if not single_product:
+        return jsonify({"msg":"Product does not exist"})
+    return jsonify({
+        'product':{
+            "product_name" : single_product[1],
+            "manufacture_date" : single_product[2],
+            "expiry_date" : single_product[3],
+            "quantity" : single_product[4],
+            "description" : single_product[5]
+        }
+    })
+    
 
 @app.route("/api/v1/sales", methods=['POST'])
+@token_required
 def save_a_sale(current_user):
-    # sale = {
-    #     "id" : len(sales)+1,
-    #     "product_sold" : request.json[0]['product_sold'],
-    #     'quantity' : request.json[0]['quantity'],
-    #     'unit_cost' : request.json[0]['unit_cost'],
-    #     'total_cost' :request.json[0]['total_cost'],
-    #     'attendant' :request.json[0]['attendant']
-    #     }
-    # sales.append(sale)
-    # return jsonify({"sales": sale})
     pass
 
 
 @app.route("/api/v1/products/<int:id>", methods = ['DELETE'])
-def delete_product(id):
-    # my_product = [product for product in products if product['id'] == id]
-    # products.remove(my_product[0])
-    # return jsonify({"product" : products})
-    pass
+@token_required
+def delete_product(current_user, id):
+   
+    product = Users.find_specific_item('products','id', id)
+    if not product:
+        return jsonify({"msg":"Product does not exist"})
+    Products.delete_product(id)
+
+    return jsonify({
+        "msg":" Product has been deleted"
+        })
 
 
+    
 if __name__ == "__main__":
     app.run(debug=True)

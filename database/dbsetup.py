@@ -72,3 +72,10 @@ class Database():
         WHERE id='{}';""".format(product_name,manufacture_date,expiry_date,quantity, description, id)
         self.cursor.execute(updating_a_product)
         self.connection.commit()
+
+    
+    def delete_product(self, id):
+        deleting_a_product = """
+        DELETE FROM products WHERE id = '{}';""".format(id)
+        self.cursor.execute(deleting_a_product)
+        self.connection.commit()

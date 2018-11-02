@@ -7,6 +7,7 @@ class TestProductEndpoints(TestCase):
 
 
     def setUp(self):
+        
         self.client = app.test_client()
     
     def tearDown(self):

@@ -24,8 +24,9 @@ class TestUserEndpoints(TestCase):
 
         response =  self.client.post('/auth/signup',content_type='application/json',data=json.dumps(new_user)
         )
-
         response_data = json.loads(response.data.decode())
 
+        self.assertEqual(response_data['msg_fail'], 'ezramahlon@gmail.com is already registered. Try other or Login')
         self.assertEqual(response_data['msg'], 'You have successfully added ezra')
         self.assertEqual(response.status_code, 201)
+    

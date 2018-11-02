@@ -21,7 +21,20 @@ class Users(object):
     def find_specific_item(table_name, column_name, value):
         item = databaseObject.query(table_name, column_name, value)
         if not item:
-            return {
-                "msg":"item does not exist"
-            }
+            return True
         return item
+
+class ValidateUserEmail(Users):
+
+    def __init__(self, name, email, password, role):
+        super().__init__(name, email, password, role)
+
+    
+    def does_email_exist(self, email):      
+
+        email_to_check = super().find_specific_item('users','email',email)        
+        if email_to_check is None:
+            print(email_to_check)
+            return {"msg":"{} is available. You can sign in".format(email_to_check)}, email_to_check
+        
+        return email_to_check

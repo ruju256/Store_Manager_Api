@@ -7,33 +7,33 @@ class Products():
 
     product_list = []
 
-    def __init__(self, product_name, manufacture_date, expiry_date, quantity, description):
+    def __init__(self, product_name, unit_price, quantity, description, category):
         self.product_name = product_name
-        self.manufacture_date = manufacture_date
-        self.expiry_date = expiry_date
+        self.unit_price = unit_price
         self.quantity = quantity
         self.description = description
+        self.category = category
 
 
     def save_product(self):
         '''creating database connection'''
-        databaseObject.add_a_product(self.product_name, self.manufacture_date, self.expiry_date, self.quantity, self.description)
+        databaseObject.add_a_product(self.product_name, self.unit_price, self.quantity, self.description, self.category)
         return "{}".format(self.product_name)
 
     def update_a_product(self, id):
         product = Users.find_specific_item('products','id', id)        
         if product is None:
             return False       
-        databaseObject.update_a_product(self.product_name, self.manufacture_date, self.expiry_date, self.quantity, self.description, id)
+        databaseObject.update_a_product(self.product_name, self.unit_price, self.quantity, self.description, self.category, id)
         product = Users.find_specific_item('products','id', id)
 
         return{
             "id":product[0],
             "product_name":product[1],
-            "manufacture_date":product[2],
-            "expiry_date":product[3],
-            "quantity":product[4],
-            "description":product[5]
+            "unit_price":product[2],
+            "quantity":product[3],
+            "description":product[4],
+            "category":product[5]
         }
 
     def get_details_for_single_product(self, id):
@@ -42,10 +42,10 @@ class Products():
             return False
         return{
             "product_name":product[1],
-            "manufacture_date":product[2],
-            "expiry_date":product[3],
-            "quantity":product[4],
-            "description":product[5]
+            "unit_price":product[2],
+            "quantity":product[3],
+            "description":product[4],
+            "category":product[5]
         }
 
     @staticmethod
@@ -54,7 +54,28 @@ class Products():
         if product is None:
             return False
         databaseObject.delete_product(id)
-        return{
-            "msg":"Product has been deleted"
-        }
+        return{"msg":"Product has been deleted"}
+
+    @staticmethod
+    def view_all_products(table_name):
+        product_list = databaseObject.view_all_records(table_name)
+        if product_list ==[]:
+            print("You have no products in the store")
+            return False
+        
+        Products.product_list.clear()
+        for product in product_list:
+            product = {
+                "id":product_list[0],
+                "product_name":product_list[1],
+                "unit_price":product_list[2],
+                "quantity":product_list[3],
+                "description":product_list[4],
+                "category":product_list[5]
+            }
+            Products.product_list.append(product)
+            return Products.product_list
+    
+     
+
 
